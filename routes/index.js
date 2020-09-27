@@ -1,13 +1,11 @@
 var express = require("express");
 var router = express.Router();
-const uuid = require("uuid");
-
+var www = require("../bin/www");
 /* GET home page. */
-router.get("/", function (req, res, next) {
+router.get("/", function (_, res, _) {
     res.render("index");
 });
 
-var mappingPlayers = {};
 var numberPlayers = 0;
 var colors = ["white", "yellow", "red", "black"];
 router.post("/login", function (req, res) {
@@ -16,15 +14,11 @@ router.post("/login", function (req, res) {
         return;
     }
 
-    const id = uuid.v4();
-    mappingPlayers[id] = numberPlayers;
-
-    req.session.userId = id;
-    req.session.playerId = numberPlayers;
     res.send({
         ok: true,
         message: `Your color is ${colors[numberPlayers]}`,
         color: numberPlayers,
+        currentPlayer: www.currentPlayer(),
     });
 
     numberPlayers++;

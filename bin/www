@@ -87,23 +87,46 @@ function onListening() {
 }
 
 const wss = new WebSocket.Server({ server });
-wss.on("connection", function (ws) {
-    console.log("started client interval");
 
-    // const id = setInterval(function () {
-    //     wss.clients.forEach(function each(client) {
-    //         if (client.readyState === WebSocket.OPEN) {
-    //             client.send(
-    //                 JSON.stringify({
-    //                     a: 1,
-    //                 })
-    //             );
-    //         }
-    //     });
-    // }, 1000);
+var currentPlayer = 0;
+wss.on("connection", function (ws) {
+    ws.on("message", function (message) {
+        const data = JSON.parse(message);
+        let userId = data.userId;
+        if (userId == currentPlayer) {
+            switch (data.type) {
+                case "nexting": {
+                    wss.clients.forEach(function each(client) {
+                        if (client.readyState === WebSocket.OPEN) {
+                            client.send(
+                                JSON.stringify({
+                                    type: "nexted",
+                                })
+                            );
+                        }
+                    });
+                    break;
+                }
+                case "checkmating": {
+                    wss.clients.forEach(function each(client) {
+                        if (client.readyState === WebSocket.OPEN) {
+                            client.send("checkmated");
+                        }
+                    });
+                    break;
+                }
+            }
+
+            currentPlayer += 1;
+            currentPlayer %= 4;
+        }
+    });
 
     ws.on("close", function () {
         console.log("stopping client interval");
-        // clearInterval(id);
     });
 });
+
+module.exports.currentPlayer = () => {
+    return currentPlayer;
+};

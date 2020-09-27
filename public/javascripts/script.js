@@ -30,7 +30,7 @@ function getRowPlayer(id) {
     return document.getElementById(rowElementId);
 }
 
-function countdownNextPlayer() {
+function moveNextPlayer() {
     let prevIndicator = getIndicatorPlayer(currentPlayerId);
     prevIndicator.className = "hide";
 
@@ -114,4 +114,102 @@ function checkmatePlayer() {
     if (currentPlayerIndex < 0) {
         currentPlayerIndex = listPlayers.length - 1;
     }
+}
+
+const messages = document.querySelector("#messages");
+const wsButton = document.querySelector("#wsButton");
+const wsSendButton = document.querySelector("#wsSendButton");
+const logout = document.querySelector("#logout");
+const login = document.querySelector("#login");
+
+function showMessage(data) {
+    messages.textContent = data.message;
+}
+
+function handleResponse(response) {
+    return response.ok
+        ? response.json().then((data) => data)
+        : Promise.reject(new Error("Unexpected response"));
+}
+
+let ws;
+let color;
+let userId;
+
+login.onclick = function () {
+    fetch("/login", { method: "POST", credentials: "same-origin" })
+        .then(handleResponse)
+        .then(function (data) {
+            showMessage(data);
+            if (data.ok) {
+                color = data.color;
+                userId = data.color;
+                for (i = 0; i < data.currentPlayer; i++) {
+                    moveNextPlayer();
+                }
+                openWebSocket();
+                afterLogin();
+            }
+        })
+        .catch(function (err) {
+            showMessage(err.message);
+        });
+};
+
+function openWebSocket() {
+    if (ws) {
+        ws.onerror = ws.onopen = ws.onclose = null;
+        ws.close();
+    }
+
+    ws = new WebSocket(`ws://${location.host}`);
+    ws.onerror = function () {
+        alert("WebSocket error");
+    };
+    ws.onopen = function () {
+        console.log("Socket opened");
+
+        ws.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+
+            switch (data.type) {
+                case "nexted": {
+                    moveNextPlayer();
+                }
+            }
+        };
+    };
+    ws.onclose = function () {
+        ws = null;
+    };
+}
+
+function sendNexting() {
+    ws.send(
+        JSON.stringify({
+            userId: userId,
+            type: "nexting",
+        })
+    );
+}
+
+function afterLogin() {
+    var countdown = 4;
+    var intervalId = setInterval(() => {
+        const loginPanel = document.querySelector("#login-panel-countdown");
+        loginPanel.textContent = countdown + "...";
+        countdown--;
+    }, 1000);
+
+    setTimeout(() => {
+        const loginPanel = document.querySelector("#login-panel");
+        loginPanel.style.visibility = "hidden";
+
+        const mainPanel = document.querySelector("#main-panel");
+        mainPanel.style.visibility = "visible";
+
+        const rowPlayer = document.querySelector(`#row-${color}`);
+        rowPlayer.style.fontWeight = "bold";
+        clearInterval(intervalId);
+    }, 5000);
 }
