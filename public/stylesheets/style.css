@@ -1,0 +1,183 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+body {
+    margin: 5% 30% 0% 30%;
+    font-size: x-large;
+    border: 2px solid;
+    border-radius: 16px;
+    touch-action: manipulation;
+}
+
+.page-title {
+    margin-bottom: 50px;
+}
+
+@media screen and (max-width: 800px) {
+    body {
+        margin: 5px 5px 5px 5px;
+        font-size: large;
+        touch-action: manipulation;
+    }
+
+    .page-title {
+        margin-bottom: 0px;
+    }
+
+    .text-row {
+        font-size: 1.5rem !important;
+    }
+
+    .triangle-playing {
+        border-top: 0.75rem solid transparent !important;
+        border-left: 1.5rem solid #4caf50 !important;
+        border-bottom: 0.75rem solid transparent !important;
+    }
+    .progress-circle {
+        height: 1.5rem !important;
+        width: 1.5rem !important;
+    }
+
+    .change-color {
+        font-size: 1.5rem !important;
+    }
+}
+.col-1 {
+    width: 8.33%;
+}
+.col-2 {
+    width: 16.66%;
+}
+.col-3 {
+    width: 25%;
+}
+.col-4 {
+    width: 33.33%;
+}
+.col-5 {
+    width: 41.66%;
+}
+.col-6 {
+    width: 50%;
+}
+.col-7 {
+    width: 58.33%;
+}
+.col-8 {
+    width: 66.66%;
+}
+.col-9 {
+    width: 75%;
+}
+.col-10 {
+    width: 83.33%;
+}
+.col-11 {
+    width: 91.66%;
+}
+.col-12 {
+    width: 100%;
+}
+[class*="col-"] {
+    float: left;
+    padding: 15px;
+}
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.triangle-playing {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 1.5rem solid transparent;
+    border-left: 3rem solid #4caf50;
+    border-bottom: 1.5rem solid transparent;
+}
+
+.hide {
+    display: none;
+}
+
+.button {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+}
+
+.button:hover {
+    background-color: #3e8e41;
+}
+
+.button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+    -webkit-transform: translateY(4px);
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.change-color {
+    animation: color-change 2s infinite;
+    text-align: center;
+    font-size: 3rem;
+}
+
+@keyframes color-change {
+    0% {
+        color: red;
+    }
+    16% {
+        color: orange;
+    }
+    32% {
+        color: yellow;
+    }
+    48% {
+        color: green;
+    }
+    64% {
+        color: blue;
+    }
+    80% {
+        color: blueviolet;
+    }
+    100% {
+        color: red;
+    }
+}
+
+.check-mate {
+    background-color: gray;
+}
+
+.text-row {
+    text-align: center;
+    font-size: 3rem;
+}
+
+.player-name {
+    border-radius: 10px;
+}
+
+#login-panel {
+    height: 0px;
+}

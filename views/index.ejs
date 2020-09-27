@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>4 Player Chess Timer</title>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <link rel="stylesheet" href="./stylesheets/style.css" />
+        <link rel="stylesheet" href="./stylesheets/progress-circle.css" />
+
+        <script src="./javascripts/script.js"></script>
+    </head>
+
+    <body>
+        <div id="login-panel" style="text-align: center">
+            <h1>Login</h1>
+            <button id="login" type="button" title="Login">Login</button>
+            <pre id="messages" style="overflow: scroll"></pre>
+            <p id="login-panel-countdown" style="overflow: scroll"></p>
+        </div>
+        <div id="main-panel" style="visibility: hidden">
+            <div class="center">
+                <h1 class="center page-title">4 Player Chess Timer</h1>
+            </div>
+            <div class="row" id="row-0">
+                <div class="col-1">
+                    <span
+                        id="indicator-player-0"
+                        class="triangle-playing"
+                    ></span>
+                </div>
+                <div class="col-6">
+                    <div
+                        id="player-name-0"
+                        style="background-color: #ddd"
+                        class="text-row player-name"
+                    >
+                        White
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div id="timer-player-0" class="text-row">60</div>
+                </div>
+
+                <div class="col-2">
+                    <div
+                        id="free-timer-player-0"
+                        class="hide"
+                        data-progress="0"
+                    ></div>
+                </div>
+            </div>
+            <div class="row" id="row-1">
+                <div class="col-1">
+                    <span id="indicator-player-1" class="hide"></span>
+                </div>
+                <div class="col-6">
+                    <div
+                        id="player-name-1"
+                        style="background-color: yellow"
+                        class="text-row player-name"
+                    >
+                        Yellow
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div id="timer-player-1" class="text-row">60</div>
+                </div>
+                <div class="col-2">
+                    <div
+                        id="free-timer-player-1"
+                        class="hide"
+                        data-progress="0"
+                    ></div>
+                </div>
+            </div>
+            <div class="row" id="row-2">
+                <div class="col-1">
+                    <span id="indicator-player-2" class="hide"></span>
+                </div>
+                <div class="col-6">
+                    <div
+                        id="player-name-2"
+                        style="background-color: red; color: white"
+                        class="text-row player-name"
+                    >
+                        Red
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div id="timer-player-2" class="text-row">60</div>
+                </div>
+                <div class="col-2">
+                    <div
+                        id="free-timer-player-2"
+                        class="hide"
+                        data-progress="0"
+                    ></div>
+                </div>
+            </div>
+            <div class="row" id="row-3">
+                <div class="col-1">
+                    <span id="indicator-player-3" class="hide"></span>
+                </div>
+                <div class="col-6">
+                    <div
+                        id="player-name-3"
+                        style="background-color: black; color: white"
+                        class="text-row player-name"
+                    >
+                        Black
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div id="timer-player-3" class="text-row">60</div>
+                </div>
+                <div class="col-2">
+                    <div
+                        id="free-timer-player-3"
+                        class="hide"
+                        data-progress="0"
+                    ></div>
+                </div>
+            </div>
+            <br />
+            <div class="row" style="text-align: center">
+                <div class="col-5">
+                    <button class="button" onclick="countdownNextPlayer();">
+                        Next!
+                    </button>
+                </div>
+                <div class="col-3">
+                    <button class="button" onclick="checkmatePlayer();">
+                        Checkmate!
+                    </button>
+                </div>
+            </div>
+            <br />
+        </div>
+    </body>
+    <script src="./javascripts/app.js"></script>
+</html>
