@@ -89,6 +89,8 @@ function onListening() {
 const wss = new WebSocket.Server({ server });
 
 var currentPlayer = 0;
+var currentPlayerIndex = 0;
+var listPlayers = [0, 1, 2, 3];
 wss.on("connection", function (ws) {
     ws.on("message", function (message) {
         const data = JSON.parse(message);
@@ -105,20 +107,32 @@ wss.on("connection", function (ws) {
                             );
                         }
                     });
+
+                    currentPlayerIndex += 1;
+                    currentPlayerIndex %= listPlayers.length;
                     break;
                 }
                 case "checkmating": {
                     wss.clients.forEach(function each(client) {
                         if (client.readyState === WebSocket.OPEN) {
-                            client.send("checkmated");
+                            listPlayers = listPlayers.filter(function (i) {
+                                return userId != i;
+                            });
+                            client.send(
+                                JSON.stringify({
+                                    type: "checkmated",
+                                    playerId: userId,
+                                })
+                            );
                         }
                     });
+                    if (currentPlayerIndex == listPlayers.length) {
+                        currentPlayerIndex = 0;
+                    }
                     break;
                 }
             }
-
-            currentPlayer += 1;
-            currentPlayer %= 4;
+            currentPlayer = listPlayers[currentPlayerIndex];
         }
     });
 

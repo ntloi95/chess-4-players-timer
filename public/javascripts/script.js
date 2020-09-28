@@ -94,26 +94,28 @@ function stopCountDownPlayer(id) {
     }
 }
 
-function checkmatePlayer() {
-    if (!listPlayers.includes(currentPlayerId)) {
+function checkmatePlayer(id) {
+    if (!listPlayers.includes(id)) {
         return;
     }
 
-    let row = getRowPlayer(currentPlayerId);
+    let row = getRowPlayer(id);
     row.className += " check-mate";
-    let currentFreeTimer = getFreeTimerPlayer(currentPlayerId);
+    let currentFreeTimer = getFreeTimerPlayer(id);
     currentFreeTimer.className = "hide";
-    let currentTimer = getTimerPlayer(currentPlayerId);
+    let currentTimer = getTimerPlayer(id);
     currentTimer.className = "text-row";
-    stopCountDownPlayer(currentPlayerId);
-    listPlayers = listPlayers.filter(function (id) {
-        return id != currentPlayerId;
+    stopCountDownPlayer(id);
+    listPlayers = listPlayers.filter(function (i) {
+        return id != i;
     });
 
     currentPlayerIndex -= 1;
     if (currentPlayerIndex < 0) {
         currentPlayerIndex = listPlayers.length - 1;
     }
+    currentPlayerId = listPlayers[currentPlayerIndex];
+    moveNextPlayer();
 }
 
 const messages = document.querySelector("#messages");
@@ -137,6 +139,7 @@ let color;
 let userId;
 
 login.onclick = function () {
+    login.disabled = true;
     fetch("/login", { method: "POST", credentials: "same-origin" })
         .then(handleResponse)
         .then(function (data) {
@@ -175,6 +178,12 @@ function openWebSocket() {
             switch (data.type) {
                 case "nexted": {
                     moveNextPlayer();
+                    break;
+                }
+
+                case "checkmated": {
+                    checkmatePlayer(data.playerId);
+                    break;
                 }
             }
         };
@@ -189,6 +198,15 @@ function sendNexting() {
         JSON.stringify({
             userId: userId,
             type: "nexting",
+        })
+    );
+}
+
+function sendCheckmating() {
+    ws.send(
+        JSON.stringify({
+            userId: userId,
+            type: "checkmating",
         })
     );
 }
@@ -210,6 +228,9 @@ function afterLogin() {
 
         const rowPlayer = document.querySelector(`#row-${color}`);
         rowPlayer.style.fontWeight = "bold";
+
+        const playerName = getPlayerName(color);
+        playerName.textContent += "*";
         clearInterval(intervalId);
     }, 5000);
 }
