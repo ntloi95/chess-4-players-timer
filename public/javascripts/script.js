@@ -152,6 +152,10 @@ login.onclick = function () {
                 }
                 openWebSocket();
                 afterLogin();
+            } else {
+                userId = -1;
+                openWebSocket();
+                afterLogin();
             }
         })
         .catch(function (err) {
