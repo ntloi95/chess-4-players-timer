@@ -141,6 +141,7 @@ wss.on("connection", function (ws) {
     });
 });
 
-module.exports.currentPlayer = () => {
-    return currentPlayer;
+module.exports.currentPlayer = currentPlayer;
+module.exports.resetListPlayers = () => {
+    listPlayers = [0, 1, 2, 3];
 };

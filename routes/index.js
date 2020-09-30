@@ -29,6 +29,7 @@ router.post("/login", function (req, res) {
 
 router.get("/reset", function (req, res) {
     numberPlayers = 0;
+    www.resetListPlayers();
     res.send({
         message: "Reseted!",
     });
