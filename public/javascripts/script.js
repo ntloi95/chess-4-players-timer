@@ -95,6 +95,9 @@ function stopCountDownPlayer(id) {
 }
 
 function checkmatePlayer(id) {
+    if (id == undefined) {
+        id = currentPlayerId;
+    }
     if (!listPlayers.includes(id)) {
         return;
     }
@@ -103,6 +106,8 @@ function checkmatePlayer(id) {
     row.className += " check-mate";
     let currentFreeTimer = getFreeTimerPlayer(id);
     currentFreeTimer.className = "hide";
+    let prevIndicator = getIndicatorPlayer(id);
+    prevIndicator.className = "hide";
     let currentTimer = getTimerPlayer(id);
     currentTimer.className = "text-row";
     stopCountDownPlayer(id);
@@ -236,5 +241,7 @@ function afterLogin() {
         const playerName = getPlayerName(color);
         playerName.textContent += "*";
         clearInterval(intervalId);
-    }, 5000);
+    }, 0);
 }
+
+afterLogin();
