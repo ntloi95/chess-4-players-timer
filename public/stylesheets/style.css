@@ -1,13 +1,20 @@
+@font-face {
+    font-family: "Roboto Mono";
+    src: url(../fonts/Roboto_Mono/static/RobotoMono-Regular.ttf);
+}
+
 * {
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Roboto Mono";
 }
+
 body {
-    margin: 5% 30% 0% 30%;
+    margin: 5vh 15% 5vh 15%;
     font-size: x-large;
     border: 2px solid;
     border-radius: 16px;
     touch-action: manipulation;
+    text-align: center;
 }
 
 .page-title {
@@ -31,7 +38,7 @@ body {
 
     .triangle-playing {
         border-top: 0.75rem solid transparent !important;
-        border-left: 1.5rem solid #4caf50 !important;
+        border-left: 1.5rem solid #007c05 !important;
         border-bottom: 0.75rem solid transparent !important;
     }
     .progress-circle {
@@ -94,12 +101,12 @@ body {
     width: 0;
     height: 0;
     border-top: 1.5rem solid transparent;
-    border-left: 3rem solid #4caf50;
+    border-left: 3rem solid #007c05;
     border-bottom: 1.5rem solid transparent;
 }
 
 .hide {
-    display: none;
+    display: visible;
 }
 
 .button {
@@ -111,10 +118,11 @@ body {
     text-decoration: none;
     outline: none;
     color: #fff;
-    background-color: #4caf50;
+    background-color: #007c05;
     border: none;
-    border-radius: 15px;
+    border-radius: 16px;
     box-shadow: 0 9px #999;
+    width: 200px;
 }
 
 .button:hover {
@@ -180,4 +188,27 @@ body {
 
 #login-panel {
     height: 0px;
+}
+
+.no-pading {
+    padding: 2%;
+}
+
+.width-90 {
+    width: 90%;
+}
+
+.margin-5 {
+    margin: 5%;
+}
+
+.font-size-3rem {
+    font-size: 3rem;
+}
+
+.title-row {
+    background-color: #66bb6a;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    margin-bottom: 3rem;
 }

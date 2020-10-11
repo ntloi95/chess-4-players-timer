@@ -81,7 +81,7 @@ function startCountDownPlayer(id) {
                 timer.innerText = second;
             }, 1000);
         }
-    }, 100);
+    }, 300);
 }
 
 function stopCountDownPlayer(id) {
@@ -143,64 +143,64 @@ let ws;
 let color;
 let userId;
 
-login.onclick = function () {
-    login.disabled = true;
-    fetch("/login", { method: "POST", credentials: "same-origin" })
-        .then(handleResponse)
-        .then(function (data) {
-            showMessage(data);
-            if (data.ok) {
-                color = data.color;
-                userId = data.color;
-                for (i = 0; i < data.currentPlayer; i++) {
-                    moveNextPlayer();
-                }
-                openWebSocket();
-                afterLogin();
-            } else {
-                userId = -1;
-                openWebSocket();
-                afterLogin();
-            }
-        })
-        .catch(function (err) {
-            showMessage(err.message);
-        });
-};
+// login.onclick = function () {
+//     login.disabled = true;
+//     fetch("/login", { method: "POST", credentials: "same-origin" })
+//         .then(handleResponse)
+//         .then(function (data) {
+//             showMessage(data);
+//             if (data.ok) {
+//                 color = data.color;
+//                 userId = data.color;
+//                 for (i = 0; i < data.currentPlayer; i++) {
+//                     moveNextPlayer();
+//                 }
+//                 openWebSocket();
+//                 afterLogin();
+//             } else {
+//                 userId = -1;
+//                 openWebSocket();
+//                 afterLogin();
+//             }
+//         })
+//         .catch(function (err) {
+//             showMessage(err.message);
+//         });
+// };
 
-function openWebSocket() {
-    if (ws) {
-        ws.onerror = ws.onopen = ws.onclose = null;
-        ws.close();
-    }
+// function openWebSocket() {
+//     if (ws) {
+//         ws.onerror = ws.onopen = ws.onclose = null;
+//         ws.close();
+//     }
 
-    ws = new WebSocket(`wss://${location.host}`);
-    ws.onerror = function () {
-        alert("WebSocket error");
-    };
-    ws.onopen = function () {
-        console.log("Socket opened");
+//     ws = new WebSocket(`wss://${location.host}`);
+//     ws.onerror = function () {
+//         alert("WebSocket error");
+//     };
+//     ws.onopen = function () {
+//         console.log("Socket opened");
 
-        ws.onmessage = function (event) {
-            const data = JSON.parse(event.data);
+//         ws.onmessage = function (event) {
+//             const data = JSON.parse(event.data);
 
-            switch (data.type) {
-                case "nexted": {
-                    moveNextPlayer();
-                    break;
-                }
+//             switch (data.type) {
+//                 case "nexted": {
+//                     moveNextPlayer();
+//                     break;
+//                 }
 
-                case "checkmated": {
-                    checkmatePlayer(data.playerId);
-                    break;
-                }
-            }
-        };
-    };
-    ws.onclose = function () {
-        ws = null;
-    };
-}
+//                 case "checkmated": {
+//                     checkmatePlayer(data.playerId);
+//                     break;
+//                 }
+//             }
+//         };
+//     };
+//     ws.onclose = function () {
+//         ws = null;
+//     };
+// }
 
 function sendNexting() {
     ws.send(
@@ -220,28 +220,64 @@ function sendCheckmating() {
     );
 }
 
-function afterLogin() {
-    var countdown = 4;
-    var intervalId = setInterval(() => {
-        const loginPanel = document.querySelector("#login-panel-countdown");
-        loginPanel.textContent = countdown + "...";
-        countdown--;
-    }, 1000);
+// function afterLogin() {
+//     var countdown = 4;
+//     var intervalId = setInterval(() => {
+//         const loginPanel = document.querySelector("#login-panel-countdown");
+//         loginPanel.textContent = countdown + "...";
+//         countdown--;
+//     }, 1000);
 
-    setTimeout(() => {
-        const loginPanel = document.querySelector("#login-panel");
-        loginPanel.style.visibility = "hidden";
+//     setTimeout(() => {
+//         const loginPanel = document.querySelector("#login-panel");
+//         loginPanel.style.visibility = "hidden";
 
-        const mainPanel = document.querySelector("#main-panel");
-        mainPanel.style.visibility = "visible";
+//         const mainPanel = document.querySelector("#main-panel");
+//         mainPanel.style.visibility = "visible";
 
-        const rowPlayer = document.querySelector(`#row-${color}`);
-        rowPlayer.style.fontWeight = "bold";
+//         // const rowPlayer = document.querySelector(`#row-${color}`);
+//         // rowPlayer.style.fontWeight = "bold";
 
-        const playerName = getPlayerName(color);
-        playerName.textContent += "*";
-        clearInterval(intervalId);
-    }, 0);
+//         // const playerName = getPlayerName(color);
+//         // playerName.textContent += "*";
+//         clearInterval(intervalId);
+//     }, 0);
+// }
+
+// afterLogin();
+
+document.addEventListener("keydown", function (e) {
+    if (e.code === "Enter" || e.code === "Space") {
+        e.preventDefault();
+    }
+});
+
+document.addEventListener("keyup", function (e) {
+    if (e.code === "Enter" || e.code === "Space") {
+        e.preventDefault();
+        moveNextPlayer();
+    }
+});
+
+
+function scoreByPiece(nKing, nQueen, nRook, nBishop, nKnight, nPawn) {
+    return nKing * 20 + nQueen * 9 + nRook * 5 + nBishop * 5 + nKnight * 3 + nPawn;
 }
 
-afterLogin();
+function getIntByElementId(id) {
+    return parseInt(document.getElementById(id).value);
+}
+
+function summaryScore() {
+    for (let i = 0; i < 4; i++) {
+        let nKing = getIntByElementId(`n-king-${i}`);
+        let nQueen = getIntByElementId(`n-queen-${i}`);
+        let nRook = getIntByElementId(`n-rook-${i}`);
+        let nBishop = getIntByElementId(`n-bishop-${i}`);
+        let nKnight = getIntByElementId(`n-knight-${i}`);
+        let nPawn = getIntByElementId(`n-pawn-${i}`);
+
+        let score = document.querySelector(`#row-${i} > div:nth-child(5) > span`);
+        score.textContent = scoreByPiece(nKing, nQueen, nRook, nBishop, nKnight, nPawn);
+    }
+}
